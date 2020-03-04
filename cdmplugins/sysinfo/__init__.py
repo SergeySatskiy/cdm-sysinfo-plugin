@@ -23,6 +23,7 @@
 from distutils.version import StrictVersion
 from plugins.categories.wizardiface import WizardInterface
 from ui.qt import QTimer, QApplication, QCursor, Qt
+from ui.labels import StatusBarLabel
 import psutil
 
 UPDATE_INTERVAL = 10000     # 10 sec
@@ -59,6 +60,11 @@ class SysInfoPlugin(WizardInterface):
             self.__timer.timeout.connect(self.__update)
             self.__timer.start(UPDATE_INTERVAL)
 
+            self.__cpuWidget = StatusBarLabel(statusBar)
+            self.__memoryWidget = StatusBarLabel(statusBar)
+
+            statusBar.addPermanentWidget(self.__cpuWidget)
+            statusBar.addPermanentWidget(self.__memoryWidget)
 
             self.__update()
         except:
@@ -78,10 +84,12 @@ class SysInfoPlugin(WizardInterface):
             self.__timer = None
 
         if self.__cpuWidget is not None:
+            statusBar.removeWidget(self.__cpuWidget)
             self.__cpuWidget.deleteLater()
             self.__cpuWidget = None
 
         if self.__memoryWidget is not None:
+            statusBar.removeWidget(self.__memoryWidget)
             self.__memoryWidget.deleteLater()
             self.__memoryWidget = None
 
@@ -109,8 +117,8 @@ class SysInfoPlugin(WizardInterface):
 
     def __update(self):
         """Updates the UI"""
-        print(self.__getCPU())
-        print(self.__getMemory())
+        self.__cpuWidget.setText(self.__getCPU())
+        self.__memoryWidget.setText(self.__getMemory())
         self.__timer.start(UPDATE_INTERVAL)
 
     @staticmethod
