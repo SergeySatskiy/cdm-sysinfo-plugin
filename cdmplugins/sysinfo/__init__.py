@@ -23,7 +23,7 @@
 from distutils.version import StrictVersion
 from plugins.categories.wizardiface import WizardInterface
 from ui.qt import QTimer, QApplication, QCursor, Qt
-from ui.labels import StatusBarLabel
+from ui.labels import StatusBarFramedLabel
 import psutil
 
 UPDATE_INTERVAL = 10000     # 10 sec
@@ -60,8 +60,10 @@ class SysInfoPlugin(WizardInterface):
             self.__timer.timeout.connect(self.__update)
             self.__timer.start(UPDATE_INTERVAL)
 
-            self.__cpuWidget = StatusBarLabel(statusBar)
-            self.__memoryWidget = StatusBarLabel(statusBar)
+            self.__cpuWidget = StatusBarFramedLabel(parent=statusBar)
+            self.__cpuWidget.setToolTip('Current system-wide CPU utilization')
+            self.__memoryWidget = StatusBarFramedLabel(parent=statusBar)
+            self.__memoryWidget.setToolTip('System memory usage')
 
             statusBar.addPermanentWidget(self.__cpuWidget)
             statusBar.addPermanentWidget(self.__memoryWidget)
