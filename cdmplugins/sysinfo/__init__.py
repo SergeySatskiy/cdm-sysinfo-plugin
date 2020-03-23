@@ -42,7 +42,7 @@ class SysInfoPlugin(WizardInterface):
     @staticmethod
     def isIDEVersionCompatible(ideVersion):
         """Checks if the IDE version is compatible with the plugin"""
-        return StrictVersion(ideVersion) >= StrictVersion('4.7.0')
+        return StrictVersion(ideVersion) >= StrictVersion('4.7.1')
 
     def activate(self, ideSettings, ideGlobalData):
         """Activates the plugin"""
